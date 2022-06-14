@@ -1,9 +1,34 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React from 'react';
+import React ,{ useState } from 'react';
+import { connect } from "react-redux";
+import { signUp } from '../redux/actions';
+import { Link } from 'react-router-dom';
 import Sigh from '../components/Includes/Sigh';
 
-function Signup() {
+
+
+const  Signup = ({ signUp }) => {
+  const [state,setState] = useState({
+
+    username: '',
+    password: '',
+    email: '',
+    phone: ''
+
+  });
+  function handleChange(e) {
+    setState({
+      ...state,
+      [e.target.name]: e.target.value,
+    });
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    const url = "http://localhost:5000/register";
+    signUp(url, state);
+  };
   return (
     <div>
       <Sigh />
@@ -17,7 +42,7 @@ function Signup() {
 
               <h4 className="text-theme-colored mt-0 pt-5"> Signup</h4>
               <p>Lorem ipsum dolor sit amet, consectetur elit.</p>
-              <form id="contact_form" name="contact_form" className="" action="" method="post">
+              <form id="contact_form" name="nameff" className="" action="" method="post">
                 <div className="row">
                   <div className="col-sm-6">
                     <div className="form-group">
@@ -26,7 +51,13 @@ function Signup() {
                         {' '}
                         <small>*</small>
                       </label>
-                      <input name="form_name" className="form-control" type="text" placeholder="Enter Name" required="" />
+                      <input name="username" 
+                      className="form-control" 
+                      type="text" placeholder="Enter Username"
+                      required="" 
+                      onChange={(e) => handleChange(e)}
+                      value={state.username}
+                       />
                     </div>
                   </div>
                   <div className="col-sm-6">
@@ -36,7 +67,14 @@ function Signup() {
                         {' '}
                         <small>*</small>
                       </label>
-                      <input name="form_email" className="form-control required email" type="email" placeholder="Enter Email" />
+                      <input 
+                      name="email" 
+                      className="form-control required email" 
+                      type="email" 
+                      placeholder="Enter Email"
+                      onChange={(e) => handleChange(e)}
+                      value={state.email} 
+                      />
                     </div>
                   </div>
                 </div>
@@ -49,19 +87,35 @@ function Signup() {
                         {' '}
                         <small>*</small>
                       </label>
-                      <input name="form_password" className="form-control required" type="password" placeholder="Enter Subject" />
+                      <input name="password"
+                       className="form-control required" 
+                       type="password" 
+                       placeholder="Enter Password" 
+                       onChange={(e) => handleChange(e)}
+                       value={state.password}
+                       />
                     </div>
                   </div>
                   <div className="col-sm-6">
                     <div className="form-group">
                       <label>Phone</label>
-                      <input name="form_phone" className="form-control" type="text" placeholder="Enter Phone" />
+                      <input name="phone" 
+                      className="form-control" 
+                      type="text" 
+                      placeholder="Enter Phone" 
+                      onChange={(e) => handleChange(e)}
+                      value={state.phone}
+                      />
                     </div>
                   </div>
                 </div>
                 <div className="form-group">
-                  <input name="form_botcheck" className="form-control" type="hidden" value="" />
-                  <button type="submit" className="btn btn-dark btn-theme-colored btn-flat mr-5" data-loading-text="Please wait...">Signup</button>
+                  <button type="submit" className="btn btn-dark btn-theme-colored btn-flat mr-5" data-loading-text="Please wait..." onClick={handleSubmit}>Signup</button>
+                </div>
+                <div className="clear text-center pt-10">
+                Already User Login ?
+                  <Link className="text-theme-colored font-weight-600 font-12" to="/login">Already User Login</Link>
+                  
                 </div>
               </form>
 
@@ -72,4 +126,9 @@ function Signup() {
     </div>
   );
 }
-export default Signup;
+
+const mapDispatchToProps = {
+  signUp,
+};
+
+export default connect(null, mapDispatchToProps)(Signup);

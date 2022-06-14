@@ -1,14 +1,15 @@
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
-const postApi = async (url, payload, type, params = '') => {
+const postApi = async (url, payload , params = '') => {
+  console.log(url,payload)
   try {
     const response = await axios({
       url: url + params,
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'request-type': type,
+        //'request-type': type,
       },
       data: payload,
     });
